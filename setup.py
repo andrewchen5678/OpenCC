@@ -7,6 +7,7 @@ import warnings
 import setuptools
 import setuptools.command.build_ext
 import wheel.bdist_wheel
+import platform
 
 _this_dir = os.path.dirname(os.path.abspath(__file__))
 _clib_dir = os.path.join(_this_dir, 'python', 'opencc', 'clib')
@@ -159,9 +160,8 @@ class BDistWheelCommand(wheel.bdist_wheel.bdist_wheel, object):
                 raise NotImplementedError
                 
         if os.name == 'posix':
-            _, _, _, _, machine = os.uname()
-            return 'manylinux1-{}'.format(machine)
-
+            machine = platform.machine()
+            return 'manylinux_2_17_{}'.format(machine)
         warnings.warn(
             'Windows macos and linux are all not detected, '
             'Proper distribution name cannot be determined.')
